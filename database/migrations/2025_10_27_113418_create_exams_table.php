@@ -12,13 +12,11 @@ return new class extends Migration {
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-
-
-            $table->foreignId('user_id')->constrained();
-            $table->string('title', 100);
+            $table->string('title');
             $table->date('date');
-            $table->tinyInteger('vote'); /* YYYY-MM-DD */
+            $table->integer('vote')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
 
         });
     }

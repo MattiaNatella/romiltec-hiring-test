@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+//ROTTA ADMIN: creazione esame
+Route::get('admin/exams/create', [ExamController::class, 'createExam'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.');
+
+//ROTTA SUPERVISOR: assegnazione voto esami
+Route::patch('exams/{exam}/vote', [ExamController::class, 'assignVote'])
+    ->middleware(['auth', 'role:supervisor'])
+    ->name('supervisor.exams.assignVote');
+
+//ROTTA USER: visualizzazione esami
+Route::get('my-exams', [ExamController::class, 'myExams'])
+    ->middleware(['auth', 'role:user'])
+    ->name('user.exams.index');
+
+
+require __DIR__ . '/auth.php';
